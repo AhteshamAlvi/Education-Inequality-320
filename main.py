@@ -22,31 +22,38 @@ df['Income'] = df['Income'].str.strip()
 # -----------------------------------------------------------------------------------
 # Overall Summary Statistics
 # ----------------------------------------------------------------------------------
-'''
+
 display(df.describe())
+print('\n')
 
-states = df.groupby('state')
-grade_levels = df.groupby('grade_level')
-school_types = df.groupby('school_type')
+departments = df.groupby('Department')
+incomes = df.groupby('Income')
+preparation_levels = df.groupby('Preparation')
 
-# Summary Statistics by State
-for state,group in states:
-    sorted = group.sort_values("school_name", ascending=True)
+# Summary Statistics by Department
+for department, group in departments:
+    sorted = group.sort_values("Overall", ascending = True)
+    print(department)
     display(sorted.describe())
     display(sorted)
+    print()
 
-# Summary Statistics by Grade Level
-for grade,group in grade_levels:
-    sorted = group.sort_values("school_name", ascending=True)
+# Summary Statistics by Income
+for income, group in incomes:
+    sorted = group.sort_values("Overall", ascending = True)
+    print(income)
     display(sorted.describe())
     display(sorted)
+    print()
 
-# Summary Statistics by School Type (Public, Private, or Charter)
-for school,group in school_types:
-    sorted = group.sort_values("school_name", ascending=True)
+# Summary Statistics by Preparation Level
+for preparation_level, group in preparation_levels:
+    sorted = group.sort_values("Overall", ascending = True)
+    print(preparation_level)
     display(sorted.describe())
     display(sorted)
-'''
+    print()
+
 # ----------------------------------------------------------------------------------
 # Hypothesis
 # ----------------------------------------------------------------------------------
