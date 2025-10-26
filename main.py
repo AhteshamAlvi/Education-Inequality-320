@@ -123,4 +123,3 @@ plt.title('Highschool GPA Versus College Overall GPA')
 plt.xlabel('Highschool GPA (5.0 Scale)')
 plt.ylabel('College Cumulat vGPA (4.0 Scale)')
 plt.show()
-'''
