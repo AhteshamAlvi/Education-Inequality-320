@@ -17,62 +17,62 @@ df = pd.read_csv("ResearchInformation3.csv")
 # display(df.isnull().sum())
 df['Income'] = df['Income'].str.strip()
 
-
-
 # -----------------------------------------------------------------------------------
 # Overall Summary Statistics
 # ----------------------------------------------------------------------------------
-'''
+
 display(df.describe())
 
-states = df.groupby('state')
-grade_levels = df.groupby('grade_level')
-school_types = df.groupby('school_type')
+incomes = df.groupby('Income')
+home_towns = df.groupby('Hometown')
+overall_gpas = df.groupby('Overall')
 
 # Summary Statistics by State
-for state,group in states:
-    sorted = group.sort_values("school_name", ascending=True)
+for income,group in incomes:
+    sorted = group.sort_values("Income", ascending=True)
     display(sorted.describe())
     display(sorted)
 
 # Summary Statistics by Grade Level
-for grade,group in grade_levels:
-    sorted = group.sort_values("school_name", ascending=True)
+for home,group in home_towns:
+    sorted = group.sort_values("Hometown", ascending=True)
     display(sorted.describe())
     display(sorted)
 
 # Summary Statistics by School Type (Public, Private, or Charter)
-for school,group in school_types:
-    sorted = group.sort_values("school_name", ascending=True)
+for gpa,group in overall_gpas:
+    sorted = group.sort_values("Overall", ascending=True)
     display(sorted.describe())
     display(sorted)
-'''
+
 # ----------------------------------------------------------------------------------
 # Hypothesis
 # ----------------------------------------------------------------------------------
 
-# 1) Does Gaming, Job, and Extracurriculurs, affect Preparation?
+# 1) Part 1: Does Gaming, Job, and Extracurriculurs affect Preparation?
 
+df['Profile'] = ('Gaming: ' + 
+    df['Gaming'].astype(str) + ' | ' +
+    'Job: ' + df['Job'].astype(str) + ' | ' +
+    'Extra: ' + df['Extra'].astype(str)
+)
 
-'''
-# Filtering the data to only the relevant columns
-x_val = 'percent_minority'
-y_val = 'funding_per_student_usd'
-df_hyp1 = df[[x_val, y_val]] 
+prep_dist = df.groupby('Profile')['Preparation'].value_counts(normalize=True).mul(100).rename('Percentage').reset_index()
 
-r, p = stats.pearsonr(df_hyp1[x_val], df_hyp1[y_val])
+heatmap_data = prep_dist.pivot(index='Profile', columns='Preparation', values='Percentage')
+heatmap_data = heatmap_data.fillna(0)  # Replace NaN with 0
 
-print("Pearson correlation coefficient (r) = ", r)
-print("p-value", p)
-print("\n")
-
-# Scatter Plot & Regression Line
-sns.regplot(x=x_val, y=y_val, data=df_hyp1, line_kws={'color':'red'})
-plt.title('Percent Minority vs Funding Per Student (USD)')
-plt.xlabel('Percent Minority')
-plt.ylabel('Funding Per Student (USD)')
+plt.figure(figsize=(14, 8))
+sns.heatmap(heatmap_data, annot=True, cmap='YlGnBu', fmt=".1f")
+plt.title("Combined Effects of Gaming, Job, and Extracurriculars on Preparation (%)")
+plt.xlabel("Preparation Level")
+plt.ylabel("Gaming + Job + Extracurricular Profile")
+plt.xticks(rotation=0)
+plt.tick_params(axis='x', length=0) 
+plt.yticks(rotation=0)
+plt.tick_params(axis='y', length=0)
+plt.tight_layout()
 plt.show()
-'''
 
 # ----------------------------------------------------------------------------------
 # 2) Does the level of income have an impact on the computer proficiency level of a student?
@@ -123,3 +123,4 @@ plt.title('Highschool GPA Versus College Overall GPA')
 plt.xlabel('Highschool GPA (5.0 Scale)')
 plt.ylabel('College Cumulat vGPA (4.0 Scale)')
 plt.show()
+'''
